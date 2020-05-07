@@ -1,0 +1,3 @@
+tim@gmail.com;1234;tim;2019-03-02
+sato@gmail.com;1234;oliveira1;2020-04-14
+samuel.costa@gmail.com;5678;samuel;2020-04-15
