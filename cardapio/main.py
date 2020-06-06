@@ -1,12 +1,11 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 
-class cardapio(BoxLayout):
+class Cardapio(BoxLayout):
     pass
 
-class interface(App):
+class Interface(App):
     def build(self):
-        return cardapio()
+        return Cardapio()
 
-interface().run()
-    
+Interface().run()
