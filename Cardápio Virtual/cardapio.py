@@ -79,6 +79,34 @@ def Acoes(cena):
                     clique.play()
                     pygame.quit()
                     sys.exit()
+
+            elif cena == 1:
+
+                if pygame.Rect(r1).collidepoint(event.pos):
+                    log("Restaurante 1 selecionado")
+                    clique.play()
+                    cena = 2
+                    return cena
+
+                elif pygame.Rect(r1).collidepoint(event.pos):
+                    log("Restaurante 2 selecionado")
+                    clique.play()
+                    cena = 3
+                    return cena
+
+                elif pygame.Rect(r1).collidepoint(event.pos):
+                    log("Restaurante 3 selecionado")
+                    clique.play()
+                    cena = 4
+                    return cena
+
+                elif pygame.Rect(r1).collidepoint(event.pos):
+                    log("Restaurante 4 selecionado")
+                    clique.play()
+                    cena = 5
+                    return cena
+
+                
     return cena
 
                 
