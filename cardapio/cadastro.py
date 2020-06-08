@@ -19,8 +19,8 @@ class MyGrid(GridLayout):
         self.inside.add_widget(self.name)
 
         self.inside.add_widget(Label(text="Telefone: "))
-        self.name = TextInput(multiline=False)
-        self.inside.add_widget(self.name)
+        self.phone = TextInput(multiline=False)
+        self.inside.add_widget(self.phone)
 
         self.inside.add_widget(Label(text="Email: "))
         self.email = TextInput(multiline=False)
