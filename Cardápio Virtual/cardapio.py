@@ -12,6 +12,14 @@ class usuario:
 
 
 
+#Variáveis
+nome = ""
+cpf = ""
+email = ""
+nomeAtivo = False
+cpfAtivo = False
+emailAtivo = False
+
 #Imagens
 background = (0,0,800,600)
 titulo = (130,150,500,100)
@@ -26,7 +34,16 @@ r4 = (240,400,300,100)
 som = pygame.mixer.Sound('tracks/som.wav')
 clique = pygame.mixer.Sound('tracks/clique.wav')
 
+#Caixas de Texto
+caixaNome = pygame.Rect(240,100,300,100)
+caixaCpf = pygame.Rect(240,250,300,100)
+caixaEmail = pygame.Rect(240,400,300,100)
 
+#Cores
+cor_inativa = pygame.Color('lightskyblue3')
+cor_ativa = pygame.Color('dodgerblue2')
+cor = cor_inativa
+blue = (0,191,255)
 
 
 
@@ -50,6 +67,19 @@ def Exibir(cena):
         Exibir_Imagem(sair,'sair.jpg')
 
     elif cena == 1:
+        screen.blit(pygame.font.SysFont("Arial bold",30).render("Nome",True,(255,255,255)),[250,70])
+        pygame.draw.rect(screen,cor,caixaNome,2)
+        screen.blit(pygame.font.SysFont("Arial bold",60).render(nome,True,cor),(caixaNome.x+7,caixaNome.y+10))
+
+        screen.blit(pygame.font.SysFont("Arial bold",30).render("CPF",True,(255,255,255)),[250,220])
+        pygame.draw.rect(screen,cor,caixaCpf,2)
+        screen.blit(pygame.font.SysFont("Arial bold",60).render(cpf,True,cor),(caixaCpf.x+7,caixaCpf.y+10))
+
+        screen.blit(pygame.font.SysFont("Arial bold",30).render("E-mail",True,(255,255,255)),[250,370])
+        pygame.draw.rect(screen,cor,caixaEmail,2)
+        screen.blit(pygame.font.SysFont("Arial bold",60).render(email,True,cor),(caixaEmail.x+7,caixaEmail.y+10))
+
+    elif cena == 2:
         Exibir_Imagem(background,'background_menu.jpg')
         Exibir_Imagem(r1,'restaurante1.jpg')
         Exibir_Imagem(r2,'restaurante2.jpg')
@@ -58,11 +88,29 @@ def Exibir(cena):
 
 
 def Acoes(cena):
+    global nome
+    global cpf
+    global email
+    global nomeAtivo
+    global cpfAtivo
+    global emailAtivo
+    global cor
     
     for event in pygame.event.get():
 
         if event.type == pygame.QUIT:
             running = False
+
+        elif event.type == pygame.KEYDOWN:
+            if ativo:
+                if event.key == pygame.K_RETURN:
+                    if usuario != "":
+                        main.nome = usuario
+                elif event.key == pygame.K_BACKSPACE or len(usuario) > 15:
+                    user = user[:-1]
+                else:
+                    usuario += event.unicode
+            
         
         elif event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -81,6 +129,25 @@ def Acoes(cena):
                     sys.exit()
 
             elif cena == 1:
+
+                if caixaNome.collidepoint(event.pos):
+                    nomeAtivo = not nomeAtivo
+                    
+                elif caixaCpf.collidepoint(event.pos):
+                    cpfAtivo = not cpfAtivo
+                    
+                elif caixaEmail.collidepoint(event.pos):
+                    emailAtivo = not emailAtivo
+                    
+                else:
+                    nomeAtivo = False
+                    cpfAtivo = False
+                    emailAtivo = False
+                    
+
+                
+
+            elif cena == 2:
 
                 if pygame.Rect(r1).collidepoint(event.pos):
                     log("Restaurante 1 selecionado")
