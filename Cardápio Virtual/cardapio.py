@@ -1,24 +1,24 @@
-import pygame,pygame.mixer
+import pygame, pygame.mixer
 import os
 import sys
+from .modelo import Usuario
 
 pygame.init()
 pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=4096)
 
 
 
-class usuario:
-    pass
+user = Usuario()
 
 
-
-#Variáveis
+#Variáveis e Flags
 nome = ""
 cpf = ""
 email = ""
 nomeAtivo = False
 cpfAtivo = False
 emailAtivo = False
+valido = False
 
 #Imagens
 background = (0,0,800,600)
@@ -29,6 +29,7 @@ r1 = (240,100,300,100)
 r2 = (240,200,300,100)
 r3 = (240,300,300,100)
 r4 = (240,400,300,100)
+enviar = (240,500,300,100)
 
 #Som
 som = pygame.mixer.Sound('tracks/som.wav')
@@ -67,6 +68,8 @@ def Exibir(cena):
         Exibir_Imagem(sair,'sair.jpg')
 
     elif cena == 1:
+        Exibir_Imagem(background, 'background_menu.jpg')
+
         screen.blit(pygame.font.SysFont("Arial bold",30).render("Nome",True,(255,255,255)),[250,70])
         pygame.draw.rect(screen,cor,caixaNome,2)
         screen.blit(pygame.font.SysFont("Arial bold",60).render(nome,True,cor),(caixaNome.x+7,caixaNome.y+10))
@@ -78,6 +81,11 @@ def Exibir(cena):
         screen.blit(pygame.font.SysFont("Arial bold",30).render("E-mail",True,(255,255,255)),[250,370])
         pygame.draw.rect(screen,cor,caixaEmail,2)
         screen.blit(pygame.font.SysFont("Arial bold",60).render(email,True,cor),(caixaEmail.x+7,caixaEmail.y+10))
+
+        if not valido:
+            Exibir_Imagem(enviar,'enviarOFF.jpg')
+        else:
+            Exibir_Imagem(enviar, 'enviarON.jpg')
 
     elif cena == 2:
         Exibir_Imagem(background,'background_menu.jpg')
@@ -94,6 +102,8 @@ def Acoes(cena):
     global nomeAtivo
     global cpfAtivo
     global emailAtivo
+    global valido
+    global running
     global cor
     
     for event in pygame.event.get():
@@ -102,15 +112,23 @@ def Acoes(cena):
             running = False
 
         elif event.type == pygame.KEYDOWN:
-            if ativo:
-                if event.key == pygame.K_RETURN:
-                    if usuario != "":
-                        main.nome = usuario
-                elif event.key == pygame.K_BACKSPACE or len(usuario) > 15:
-                    user = user[:-1]
+            if nomeAtivo:
+                if event.key == pygame.K_BACKSPACE or len(user.nome) > 50:
+                    user.backspaceNome()
                 else:
-                    usuario += event.unicode
-            
+                    user.nome += event.unicode
+
+            if cpfAtivo:
+                if event.key == pygame.K_BACKSPACE or len(user.cpf) > 11:
+                    user.backspaceCpf()
+                else:
+                    user.cpf += event.unicode
+
+            if emailAtivo:
+                if event.key == pygame.K_BACKSPACE or len(user.nome) > 50:
+                    user.backspaceEmail()
+                else:
+                    user.email += event.unicode
         
         elif event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -138,6 +156,13 @@ def Acoes(cena):
                     
                 elif caixaEmail.collidepoint(event.pos):
                     emailAtivo = not emailAtivo
+
+                elif pygame.Rect(enviar).collidepoint(event.pos):
+                    if len(user.nome) > 0 and len(user.cpf) == 11 and len(user.email) > 10:
+                        log("Dados de usuário registrados")
+                        clique.play()
+                        cena = 2
+                        return cena
                     
                 else:
                     nomeAtivo = False
